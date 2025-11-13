@@ -12,15 +12,14 @@ import re
 def load_models(
     ocr_model_path="PaddlePaddle/PaddleOCR-VL",
     desc_model_name="naver-hyperclovax/HyperCLOVAX-SEED-Vision-Instruct-3B",
-    ocr_device_id="3",
-    desc_device_id="3"
+    ocr_device_id=3, 
+    desc_device_id=3
 ):
     
     # OCR 모델 로드
-    os.environ["CUDA_VISIBLE_DEVICES"] = ocr_device_id
-    DEVICE_OCR = "cuda" if torch.cuda.is_available() else "cpu"
+    DEVICE_OCR = f"cuda:{ocr_device_id}" 
 
-    print(f"Loading OCR model ({ocr_model_path}) on device {DEVICE_OCR}...")
+    print(f"Loading OCR model ({ocr_model_path}) on device ")
     ocr_model = AutoModelForCausalLM.from_pretrained(
         ocr_model_path,
         trust_remote_code=True,
@@ -34,8 +33,7 @@ def load_models(
     )
 
     # image 설명 모델 로드
-    os.environ["CUDA_VISIBLE_DEVICES"] = desc_device_id
-    DEVICE_DESC = "cuda" if torch.cuda.is_available() else "cpu"
+    DEVICE_DESC = f"cuda:{desc_device_id}" if torch.cuda.is_available() else "cpu"
 
     print(f"Loading Description model ({desc_model_name}) on device {DEVICE_DESC}...")
     desc_model = AutoModelForCausalLM.from_pretrained(
@@ -199,12 +197,11 @@ If there is no image (only text), output: NO
 # --------------------------------------------------------------
 if __name__ == "__main__":
     #os.environ["CUDA_VISIBLE_DEVICES"] = "3"
-
     # 모델 로드 
-    models = load_models(ocr_device_id="3", desc_device_id="3")
+    models = load_models(ocr_device_id=3, desc_device_id=3)
 
     # 이미지 목록
-    file_name = "카카오톡"
+    file_name = "뉴스"
     image_list = [
        f"/home/ljm/ocr/picture/{file_name}.png",
         #"/home/ljm/ocr/picture/dog.png",
